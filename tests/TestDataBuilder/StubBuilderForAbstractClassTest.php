@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/TestClass.php';
 
 /**
  * @covers TestDataBuilder_StubBuilderForAbstractClass
- * @covers TestDataBuilder_AbstractStubBuilder
+ * @covers TestDataBuilder_StubBuilder
  */
 class TestDataBuilder_StubBuilderForAbstractClassTest extends PHPUnit_Framework_TestCase
 {
@@ -38,7 +38,7 @@ class TestDataBuilder_StubBuilderForAbstractClassTest extends PHPUnit_Framework_
     public function itShouldStubImplementationForAbstractMethods()
     {
         $builder = new TestDataBuilder_StubBuilderForAbstractClass('TestDataBuilder_AbstractTestClass', $this);
-        $builder->withArguments(array(true));
+        $builder->withConstructorArgs(array(true));
         $stub = $builder->build();
         $value = $stub->getTestValue();
         $value2 = $stub->getTestValue2();
@@ -52,7 +52,7 @@ class TestDataBuilder_StubBuilderForAbstractClassTest extends PHPUnit_Framework_
     public function itShouldAddNewImplementationForAbstractMethods()
     {
         $builder = new TestDataBuilder_StubBuilderForAbstractClass('TestDataBuilder_AbstractTestClass', $this);
-        $builder->withArguments(array(true));
+        $builder->withConstructorArgs(array(true));
         $builder->with('getTestValue2', 'test return value');
 
         $this->assertThat($builder->build()->getTestValue2(), $this->equalTo('test return value'));

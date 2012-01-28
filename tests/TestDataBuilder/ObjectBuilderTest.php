@@ -83,6 +83,47 @@ class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
         $objectBuilder->set('anyProperty', 'test value');
         $this->assertThat($objectBuilder->build()->anyProperty, $this->equalTo('test value'));
     }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildOtherBuilderBeforeObjectConstruction()
+    {
+        $otherBuilder = $this->getMockBuilder('TestDataBuilder_Builder')->getMockForAbstractClass();
+        $otherBuilder->expects($this->once())->method('build');
+
+        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder->with(array($otherBuilder));
+        $objectBuilder->build();
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildOtherBuilderBeforeCallingMethods()
+    {
+        $otherBuilder = $this->getMockBuilder('TestDataBuilder_Builder')->getMockForAbstractClass();
+        $otherBuilder->expects($this->once())->method('build');
+
+        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder->with(array('test value'));
+        $objectBuilder->call('overrideParameters', $otherBuilder);
+        $objectBuilder->build();
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildOtherBuilderBeforeSettingProperties()
+    {
+        $otherBuilder = $this->getMockBuilder('TestDataBuilder_Builder')->getMockForAbstractClass();
+        $otherBuilder->expects($this->once())->method('build');
+
+        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder->with(array('test value'));
+        $objectBuilder->set('anyProperty', $otherBuilder);
+        $objectBuilder->build();
+    }
 }
 
 class test_Object

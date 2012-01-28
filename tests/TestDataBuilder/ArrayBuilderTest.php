@@ -50,4 +50,17 @@ class TestDataBuilder_ArrayBuilderTest extends PHPUnit_Framework_TestCase
 
         $this->assertThat($array['anyOffset'], $this->equalTo('any value'));
     }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildOtherBuilders()
+    {
+        $otherBuilder = $this->getMockBuilder('TestDataBuilder_Builder')->getMockForAbstractClass();
+        $otherBuilder->expects($this->once())->method('build');
+
+        $array = new TestDataBuilder_ArrayBuilder();
+        $array['anyOffset'] = $otherBuilder;
+        $array->build();
+    }
 }

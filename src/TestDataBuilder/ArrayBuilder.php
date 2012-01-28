@@ -15,7 +15,7 @@ class TestDataBuilder_ArrayBuilder extends TestDataBuilder_CustomBuilder impleme
      */
     public function build()
     {
-        return $this->fields;
+        return $this->buildIfValuesAreBuilder($this->fields);
     }
 
     /**

@@ -77,13 +77,17 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
     }
 
     /**
-     * @param object $object
+     * @return object
      */
-    private function callMethods($object)
+    private function buildObject()
     {
-        foreach ($this->methodsToCall as $method => $args) {
-            $methodReflection = new ReflectionMethod($this->class, $method);
-            $methodReflection->invokeArgs($object, $args);
+        $classReflection = new ReflectionClass($this->class);
+        if (!$classReflection->getConstructor()) {
+            $object = new $this->class;
+            return $object;
+        } else {
+            $object = $classReflection->newInstanceArgs($this->buildIfValuesAreBuilder($this->constructorArgs));
+            return $object;
         }
     }
 
@@ -94,22 +98,18 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
     {
         foreach ($this->propertiesToSet as $property => $value) {
             $propertyReflection = new ReflectionProperty($this->class, $property);
-            $propertyReflection->setValue($object, $value);
+            $propertyReflection->setValue($object, $this->buildIfValueIsABuilder($value));
         }
     }
 
     /**
-     * @return object
+     * @param object $object
      */
-    private function buildObject()
+    private function callMethods($object)
     {
-        $classReflection = new ReflectionClass($this->class);
-        if (!$classReflection->getConstructor()) {
-            $object = new $this->class;
-            return $object;
-        } else {
-            $object = $classReflection->newInstanceArgs($this->constructorArgs);
-            return $object;
+        foreach ($this->methodsToCall as $method => $args) {
+            $methodReflection = new ReflectionMethod($this->class, $method);
+            $methodReflection->invokeArgs($object, $this->buildIfValuesAreBuilder($args));
         }
     }
 }

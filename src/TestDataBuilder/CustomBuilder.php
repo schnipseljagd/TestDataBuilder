@@ -10,7 +10,7 @@ abstract class TestDataBuilder_CustomBuilder extends TestDataBuilder_Builder
     /**
      * @param string $field
      * @param mixed $value
-     * @return AbstractTestDataBuilder
+     * @return TestDataBuilder_CustomBuilder
      */
     public function with($field, $value)
     {

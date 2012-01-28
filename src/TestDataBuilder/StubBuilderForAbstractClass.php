@@ -1,6 +1,6 @@
 <?php
  
-class TestDataBuilder_StubBuilderForAbstractClass extends TestDataBuilder_AbstractStubBuilder
+class TestDataBuilder_StubBuilderForAbstractClass extends TestDataBuilder_StubBuilder
 {
     /**
      * @var array
@@ -9,9 +9,9 @@ class TestDataBuilder_StubBuilderForAbstractClass extends TestDataBuilder_Abstra
 
     /**
      * @param array $arguments
-     * @return StubBuilderForAbstractClass
+     * @return TestDataBuilder_StubBuilderForAbstractClass
      */
-    public function withArguments(array $arguments)
+    public function withConstructorArgs(array $arguments)
     {
         $this->arguments = $arguments;
         return $this;
@@ -20,7 +20,7 @@ class TestDataBuilder_StubBuilderForAbstractClass extends TestDataBuilder_Abstra
     /**
      * @param integer $index
      * @param mixed $argument
-     * @return StubBuilderForAbstractClass
+     * @return TestDataBuilder_StubBuilderForAbstractClass
      */
     public function withArgument($index, $argument)
     {

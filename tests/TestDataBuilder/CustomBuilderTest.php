@@ -36,7 +36,7 @@ class TestDataBuilder_CustomBuilderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return AbstractTestDataBuilder
+     * @return TestDataBuilder_CustomBuilder
      */
     private function createTestDataBuilder()
     {

@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/TestClass.php';
 
 /**
  * @covers TestDataBuilder_StubBuilder
- * @covers TestDataBuilder_AbstractStubBuilder
+ * @covers TestDataBuilder_StubBuilder
  */
 class TestDataBuilder_StubBuilderTest extends PHPUnit_Framework_TestCase
 {
@@ -37,7 +37,7 @@ class TestDataBuilder_StubBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldStubImplementationForDefinedMethodsOnly()
     {
-        $builder = new TestDataBuilder_StubBuilder('TestDataBuilder_TestClass', $this, true);
+        $builder = new TestDataBuilder_StubWithDefinedMethodsBuilder('TestDataBuilder_TestClass', $this);
         $builder->with('getTestValue2', 'test return value');
         $stub = $builder->build();
 
@@ -80,5 +80,18 @@ class TestDataBuilder_StubBuilderTest extends PHPUnit_Framework_TestCase
         $builder->with('getTestValue', $this->throwException(new Exception()));
 
         $builder->build()->getTestValue();
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildOtherBuilders()
+    {
+        $otherBuilder = $this->getMockBuilder('TestDataBuilder_Builder')->getMockForAbstractClass();
+        $otherBuilder->expects($this->once())->method('build');
+
+        $builder = new TestDataBuilder_StubBuilder('TestDataBuilder_TestClass', $this);
+        $builder->with('getTestValue', $otherBuilder);
+        $builder->build();
     }
 }

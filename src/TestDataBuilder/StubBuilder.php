@@ -1,23 +1,45 @@
 <?php
 
-class TestDataBuilder_StubBuilder extends TestDataBuilder_AbstractStubBuilder
+class TestDataBuilder_StubBuilder extends TestDataBuilder_CustomBuilder
 {
     /**
-     * @var boolean
+     * @var string
      */
-    protected $stubOnlyImplementationsOfDefinedMethods;
+    protected $className;
+
+    /**
+     * @var PHPUnit_Framework_TestCase
+     */
+    protected $testCase;
 
     /**
      * @param string $className
      * @param PHPUnit_Framework_TestCase $testCase
-     * @param bool $stubOnlyImplementationsOfDefinedMethods
      */
-    public function __construct(
-        $className, PHPUnit_Framework_TestCase $testCase, $stubOnlyImplementationsOfDefinedMethods = false
-    )
+    public function __construct($className, PHPUnit_Framework_TestCase $testCase)
     {
-        parent::__construct($className, $testCase);
-        $this->stubOnlyImplementationsOfDefinedMethods = $stubOnlyImplementationsOfDefinedMethods;
+        $this->className = $className;
+        $this->testCase = $testCase;
+    }
+
+    /**
+     * @param string $method
+     * @param mixed $will
+     * @return TestDataBuilder_StubBuilder
+     */
+    public function with($method, $will)
+    {
+        return parent::with($method, $will);
+    }
+
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    public function build()
+    {
+        $stub = $this->createStub();
+        $this->loadMethodStubs($stub);
+        return $stub;
     }
 
     /**
@@ -25,17 +47,20 @@ class TestDataBuilder_StubBuilder extends TestDataBuilder_AbstractStubBuilder
      */
     protected function createStub()
     {
-        return $this->testCase->getMock($this->className, $this->methodsToStub(), array(), '', false, false);
+        return $this->testCase->getMock($this->className, array(), array(), '', false, false);
     }
 
     /**
-     * @return array
+     * @param PHPUnit_Framework_MockObject_MockObject $stub
      */
-    protected function methodsToStub()
+    private function loadMethodStubs($stub)
     {
-        if ($this->stubOnlyImplementationsOfDefinedMethods) {
-            return array_keys($this->fields);
+        foreach ($this->fields as $field => $will) {
+            if (!is_object($will) || !($will instanceof PHPUnit_Framework_MockObject_Stub)) {
+                $will = $this->testCase->returnValue($this->buildIfValueIsABuilder($will));
+            }
+
+            $stub->expects($this->testCase->any())->method($field)->will($will);
         }
-        return array();
     }
 }
