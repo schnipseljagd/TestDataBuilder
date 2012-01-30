@@ -34,7 +34,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
 
     /**
      * @param array $constructorArgs
-     * @return ObjectTestDataBuilder
+     * @return TestDataBuilder_ObjectBuilder
      */
     public function with(array $constructorArgs)
     {
@@ -44,7 +44,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
 
     /**
      * @param string $method
-     * @return ObjectTestDataBuilder
+     * @return TestDataBuilder_ObjectBuilder
      */
     public function call($method)
     {
@@ -57,7 +57,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
     /**
      * @param string $property
      * @param mixed $value
-     * @return ObjectTestDataBuilder
+     * @return TestDataBuilder_ObjectBuilder
      */
     public function set($property, $value)
     {
