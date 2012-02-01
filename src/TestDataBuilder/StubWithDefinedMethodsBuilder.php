@@ -1,12 +1,19 @@
 <?php
 
-class TestDataBuilder_StubWithDefinedMethodsBuilder extends TestDataBuilder_StubBuilder
+class TestDataBuilder_StubWithDefinedMethodsBuilder extends TestDataBuilder_StubBuilderForAbstractClass
 {
     /**
      * @return PHPUnit_Framework_MockObject_MockObject
      */
     protected function createStub()
     {
-        return $this->testCase->getMock($this->className, array_keys($this->fields), array(), '', false, false);
+        if (empty($this->arguments)) {
+            $callOriginalConstructor = false;
+        } else {
+            $callOriginalConstructor = true;
+        }
+        return $this->testCase->getMock(
+            $this->className, array_keys($this->fields), $this->arguments, '', $callOriginalConstructor
+        );
     }
 }

@@ -5,7 +5,7 @@ class TestDataBuilder_StubBuilderForAbstractClass extends TestDataBuilder_StubBu
     /**
      * @var array
      */
-    private $arguments = array();
+    protected $arguments = array();
 
     /**
      * @param array $arguments
@@ -34,7 +34,7 @@ class TestDataBuilder_StubBuilderForAbstractClass extends TestDataBuilder_StubBu
     protected function createStub()
     {
         return $this->testCase->getMockForAbstractClass(
-            $this->className, $this->arguments, '', true, false
+            $this->className, $this->arguments
         );
     }
 }
