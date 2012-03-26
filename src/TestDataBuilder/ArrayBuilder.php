@@ -33,7 +33,7 @@ class TestDataBuilder_ArrayBuilder extends TestDataBuilder_CustomBuilder impleme
      */
     public function offsetGet($offset)
     {
-        return isset($this->fields[$offset]);
+        return $this->fields[$offset];
     }
 
     /**

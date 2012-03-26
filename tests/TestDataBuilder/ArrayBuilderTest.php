@@ -27,7 +27,7 @@ class TestDataBuilder_ArrayBuilderTest extends PHPUnit_Framework_TestCase
         $array = new TestDataBuilder_ArrayBuilder();
         $array['test'] = 'test value';
 
-        $this->assertThat($array['test'], $this->isTrue());
+        $this->assertThat(isset($array['test']), $this->isTrue());
     }
 
     /**
@@ -37,7 +37,7 @@ class TestDataBuilder_ArrayBuilderTest extends PHPUnit_Framework_TestCase
     {
         $array = new TestDataBuilder_ArrayBuilder();
 
-        $this->assertThat($array['test'], $this->isFalse());
+        $this->assertThat(isset($array['test']), $this->isFalse());
     }
 
     /**
