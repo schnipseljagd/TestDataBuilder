@@ -72,12 +72,12 @@ class TestDataBuilder_StubBuilderTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Exception
+     * @expectedException RuntimeException
      */
     public function itShouldAddThrowExceptionImplementationForDefinedMethods()
     {
         $builder = new TestDataBuilder_StubBuilder('TestDataBuilder_TestClass', $this);
-        $builder->with('getTestValue', $this->throwException(new Exception()));
+        $builder->with('getTestValue', $this->throwException(new RuntimeException()));
 
         $builder->build()->getTestValue();
     }
