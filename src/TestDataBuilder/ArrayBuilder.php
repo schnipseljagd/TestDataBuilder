@@ -50,6 +50,16 @@ class TestDataBuilder_ArrayBuilder extends TestDataBuilder_CustomBuilder impleme
      */
     public function offsetUnset($offset)
     {
-        unset($this->fields[$offset]);
+        $this->without($offset);
+    }
+
+    /**
+     * @param string $field
+     * @return TestDataBuilder_ArrayBuilder
+     */
+    public function without($field)
+    {
+        unset($this->fields[$field]);
+        return $this;
     }
 }
