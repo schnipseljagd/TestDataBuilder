@@ -25,11 +25,26 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
     private $propertiesToSet = array();
 
     /**
+     * @var string
+     */
+    private $factoryMethod;
+
+    /**
      * @param string $class
      */
     public function __construct($class)
     {
         $this->class = $class;
+    }
+
+    /**
+     * @param string $factoryMethod
+     * @return TestDataBuilder_ObjectBuilder
+     */
+    public function useFactoryMethod($factoryMethod)
+    {
+        $this->factoryMethod = $factoryMethod;
+        return $this;
     }
 
     /**
@@ -39,6 +54,17 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
     public function with(array $constructorArgs)
     {
         $this->constructorArgs = $constructorArgs;
+        return $this;
+    }
+
+    /**
+     * @param integer $index
+     * @param mixed $constructorArg
+     * @return TestDataBuilder_ObjectBuilder
+     */
+    public function withArgument($index, $constructorArg)
+    {
+        $this->constructorArgs[$index] = $constructorArg;
         return $this;
     }
 
@@ -81,14 +107,10 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
      */
     private function buildObject()
     {
-        $classReflection = new ReflectionClass($this->class);
-        if (!$classReflection->getConstructor()) {
-            $object = new $this->class;
-            return $object;
-        } else {
-            $object = $classReflection->newInstanceArgs($this->buildIfValuesAreBuilder($this->constructorArgs));
-            return $object;
+        if ($this->factoryMethod !== null){
+            return $this->buildObjectFromFactoryMethod();
         }
+        return $this->buildObjectFromConstructor();
     }
 
     /**
@@ -111,5 +133,37 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
             $methodReflection = new ReflectionMethod($this->class, $method);
             $methodReflection->invokeArgs($object, $this->buildIfValuesAreBuilder($args));
         }
+    }
+
+    /**
+     * @return object
+     */
+    private function buildObjectFromConstructor()
+    {
+        $classReflection = new ReflectionClass($this->class);
+        if (!$classReflection->getConstructor()) {
+            $object = new $this->class;
+            return $object;
+        } else {
+            $object = $classReflection->newInstanceArgs($this->builtConstructorArgs());
+            return $object;
+        }
+    }
+
+    /**
+     * @return object
+     */
+    private function buildObjectFromFactoryMethod()
+    {
+        $methodReflection = new ReflectionMethod($this->class, $this->factoryMethod);
+        return $methodReflection->invokeArgs(null, $this->builtConstructorArgs());
+    }
+
+    /**
+     * @return array
+     */
+    private function builtConstructorArgs()
+    {
+        return $this->buildIfValuesAreBuilder($this->constructorArgs);
     }
 }
