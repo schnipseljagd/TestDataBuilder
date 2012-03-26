@@ -37,9 +37,17 @@ abstract class TestDataBuilder_Builder
      */
     protected function buildIfValueIsABuilder($value)
     {
+        return self::buildIfPossible($value);
+    }
+
+    /**
+     * @param TestDataBuilder_Builder|mixed $value
+     * @return mixed
+     */
+    public static function buildIfPossible($value)
+    {
         if ($value instanceof TestDataBuilder_Builder) {
-            $value = $value->build();
-            return $value;
+            return $value->build();
         }
         return $value;
     }
