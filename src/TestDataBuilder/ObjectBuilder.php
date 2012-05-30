@@ -119,8 +119,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
     private function setProperties($object)
     {
         foreach ($this->propertiesToSet as $property => $value) {
-            $propertyReflection = new ReflectionProperty($this->class, $property);
-            $propertyReflection->setValue($object, $this->buildIfValueIsABuilder($value));
+            $object->$property = $this->buildIfValueIsABuilder($value);
         }
     }
 
