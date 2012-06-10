@@ -1,6 +1,6 @@
 <?php
 
-class TestDataBuilder_StubWithDefinedMethodsBuilder extends TestDataBuilder_StubBuilderForAbstractClass
+class TestDataBuilder_PartialStubBuilder extends TestDataBuilder_StubBuilderForAbstractClass
 {
     /**
      * @return PHPUnit_Framework_MockObject_MockObject

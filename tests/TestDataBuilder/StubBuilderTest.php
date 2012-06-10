@@ -37,7 +37,7 @@ class TestDataBuilder_StubBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldStubImplementationForDefinedMethodsOnly()
     {
-        $builder = new TestDataBuilder_StubWithDefinedMethodsBuilder('TestDataBuilder_TestClass', $this);
+        $builder = new TestDataBuilder_PartialStubBuilder('TestDataBuilder_TestClass', $this);
         $builder->with('getTestValue2', 'test return value');
         $stub = $builder->build();
 
