@@ -53,7 +53,7 @@ class TestDataBuilder_StubBuilder extends TestDataBuilder_CustomBuilder
     /**
      * @param PHPUnit_Framework_MockObject_MockObject $stub
      */
-    private function loadMethodStubs($stub)
+    protected function loadMethodStubs($stub)
     {
         foreach ($this->fields as $field => $will) {
             if (!is_object($will) || !($will instanceof PHPUnit_Framework_MockObject_Stub)) {

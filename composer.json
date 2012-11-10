@@ -15,5 +15,8 @@
     },
     "autoload": {
         "psr-0": { "TestDataBuilder": "src/" }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
     }
 }
