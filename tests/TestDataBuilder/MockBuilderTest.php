@@ -190,7 +190,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
      * @param bool $callAutoload
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE)
     {
         $mockObject = PHPUnit_Framework_MockObject_Generator::getMock(
           $originalClassName,
@@ -199,7 +199,8 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
           $mockClassName,
           $callOriginalConstructor,
           $callOriginalClone,
-          $callAutoload
+          $callAutoload,
+          $cloneArguments
         );
         return $mockObject;
     }
