@@ -1,7 +1,7 @@
 # TestDataBuilder
 Help you to organize your object, array and stub setups in your tests.
 
-Travis-CI: [![Build Status](https://travis-ci.org/schnipseljagd/TestDataBuilder.png)](https://travis-ci.org/schnipseljagd/TestDataBuilder)
+[![Build Status](https://travis-ci.org/schnipseljagd/TestDataBuilder.png)](https://travis-ci.org/schnipseljagd/TestDataBuilder)
 
 Why should i need them?
 
