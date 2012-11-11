@@ -1,7 +1,7 @@
 {
     "name": "schnipseljagd/testdatabuilder",
-    "description": "Help you to organize your object, array and stub setups in your php tests.",
-    "keywords": ["test","testing"],
+    "description": "Help you to organize your mocks, stub, object and array setups in your tests in a nice oop way.",
+    "keywords": ["test","testing","mock","mocking"],
     "homepage": "https://github.com/schnipseljagd/TestDataBuilder",
     "license": "LGPL",
     "authors": [
