@@ -14,8 +14,8 @@ class TestDataBuilder_CustomBuilderTest extends PHPUnit_Framework_TestCase
         $testDataBuilder->with('test', 'test value')->with('test2', 'test value 2');
 
         $this->assertThat(
-            $testDataBuilder,
-            $this->attributeEqualTo('fields', array('test' => 'test value', 'test2' => 'test value 2'))
+            $testDataBuilder->build(),
+            $this->equalTo(array('test' => 'test value', 'test2' => 'test value 2'))
         );
     }
 
@@ -40,7 +40,15 @@ class TestDataBuilder_CustomBuilderTest extends PHPUnit_Framework_TestCase
      */
     private function createTestDataBuilder()
     {
-        $testDataBuilder = $this->getMockBuilder('TestDataBuilder_CustomBuilder')->getMockForAbstractClass();
+        $testDataBuilder = new TestCustomBuilder();
         return $testDataBuilder;
+    }
+}
+
+class TestCustomBuilder extends TestDataBuilder_CustomBuilder
+{
+    public function build()
+    {
+        return $this->fields;
     }
 }
