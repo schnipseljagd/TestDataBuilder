@@ -4,13 +4,14 @@ class TestDataBuilder_MockBuilder_Expectation
 {
     private $method;
     private $invocationMatcher;
-    private $arguments;
+    private $arguments = array();
+    private $stubbed = false;
+    private $stub;
 
     public function __construct($method, $invocationMatcher)
     {
         $this->method = $method;
         $this->invocationMatcher = $invocationMatcher;
-        $this->arguments = array();
     }
 
     public function getMethod()
@@ -26,10 +27,27 @@ class TestDataBuilder_MockBuilder_Expectation
     public function with()
     {
         $this->arguments = func_get_args();
+        return $this;
+    }
+
+    public function will($stub)
+    {
+        $this->stubbed = true;
+        $this->stub = $stub;
     }
 
     public function getArguments()
     {
         return $this->arguments;
+    }
+
+    public function getStub()
+    {
+        return $this->stub;
+    }
+
+    public function isStubbed()
+    {
+        return $this->stubbed;
     }
 }

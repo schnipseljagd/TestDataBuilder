@@ -12,7 +12,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->builder = new TestDataBuilder_MockBuilder('TestClass', $this);
+        $this->builder = new TestDataBuilder_MockBuilder('TestClassForMockObjectBuilder', $this);
     }
 
     /**
@@ -49,11 +49,11 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
     {
         $this->builder->expectsCall('doSomeThing')
             ->with($this->equalTo(34), $this->isInstanceOf('stdClass'));
-        $expectedMessage = "Expectation failed for method name is equal to <string:doSomeThing> when invoked 1 time(s).\nParameter 1 for invocation TestClass::doSomething(34, null) does not match expected value.\nFailed asserting that null is an instance of class \"stdClass\".";
+        $expectedMessage = "Expectation failed for method name is equal to <string:doSomeThing> when invoked 1 time(s).\nParameter 1 for invocation TestClassForMockObjectBuilder::doSomeThing(34, null) does not match expected value.\nFailed asserting that null is an instance of class \"stdClass\".";
         $mock = $this->builder->build();
 
         try {
-            $mock->doSomething(34, null);
+            $mock->doSomeThing(34, null);
         } catch (Exception $e) {
             // ignore failing expectation here
         }
@@ -72,7 +72,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
         $expectedMessage = "Expectation failed for method name is equal to <string:doSomeThing> when invoked 0 time(s).\nMethod was expected to be called 0 times, actually called 1 times.";
         $mock = $this->builder->build();
         try {
-            $mock->doSomething();
+            $mock->doSomeThing();
         } catch (Exception $e) {
             // ignore failing expectation here
         }
@@ -116,7 +116,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
         $expectedMessage = "Expectation failed for method name is equal to <string:doSomeThing> when invoked 2 time(s).\nMethod was expected to be called 2 times, actually called 1 times.";
         $this->builder->expectsExactNumberOfCalls(2, 'doSomeThing');
         $mock = $this->builder->build();
-        $mock->doSomething();
+        $mock->doSomeThing();
         $this->assertThatMockRaisesError(
             $mock,
             $expectedMessage
@@ -126,12 +126,26 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function itShouldBuildAMockWhichExpectsACallOnAStubbedMethod()
+    {
+        $this->builder->with('doSomeThing', 'a value');
+        $this->builder->expectsCall('doSomeThing');
+        $expectedMessage = "Expectation failed for method name is equal to <string:doSomeThing> when invoked 1 time(s).\nMethod was expected to be called 1 times, actually called 0 times.";
+        $this->assertThatMockRaisesError(
+            $this->builder->build(), 
+            $expectedMessage
+        );
+    }
+
+    /**
+     * @test
+     */
     public function itShouldBuildAMockWithAMethodStub()
     {
-        $this->builder->with('doSomeThing', 'test');
-        $this->builder->expectsCall('doSomeThing');
+        $this->builder->with('doSomeThing', 'a value');
+        $this->builder->expectsCall('doSomeThing')->with('test')->will('another value');
         $mock = $this->builder->build();
-        $this->assertThat($mock->doSomething(), $this->equalTo('test'));
+        $this->assertThat($mock->doSomeThing('test'), $this->equalTo('a value'));
     }
 
     /**
@@ -143,7 +157,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
         $this->builder->with('doSomeThing', $this->throwException(new RuntimeException()));
         $this->builder->expectsCall('doSomeThing');
         $mock = $this->builder->build();
-        $mock->doSomething();
+        $mock->doSomeThing();
     }
 
     /**
@@ -151,33 +165,13 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildAMockObject()
     {
-        $builder = new TestDataBuilder_MockBuilder('TestClass', $this);
-        $builder->expectsCall('doSomeThing')->with($this->equalTo('test'));
-        $builder->expectsCallAt(1, 'doSomeThing');
-        $builder->expectsAtLeastOneCall('doSomeThing');
-        $builder->expectsNoCall('doSomething');
-        $builder->expectsExactNumberOfCalls(2, 'doSomething');
-        $builder->with('doSomeThing', $this->returnValue('test'));
-        $this->assertThat($builder->build(), $this->isInstanceOf('PHPUnit_Framework_MockObject_MockObject'));
-    }
-
-    /**
-     * currently not implemented
-     */
-    public function itShouldBuildAPartialMockObject()
-    {
-        $builder = new TestDataBuilder_PartialMockBuilder('TestClass', $this);
-        $builder->withDisabledConstructor();
-        $builder->withDisabledClone();
-        $builder->withConstructorArgs(array('test'));
-        $builder->withConstructorArg(0, 'test');
-        $builder->expectsCall('doSomeThing')->with($this->equalTo('test'));
-        $builder->expectsCallAt(1, 'doSomeThing');
-        $builder->expectsAtLeastOneCall('doSomeThing');
-        $builder->expectsNoCall('doSomething');
-        $builder->expectsExactNumberOfCalls('doSomeThing')->with($this->equalTo('test'));
-        $builder->with('doSomeThing', $this->returnValue('test'));
-        $this->assertThat($builder->build(), $this->isInstanceOf('PHPUnit_Framework_MockObject_MockObject'));
+        $this->builder->expectsCall('doSomeThing')->with($this->equalTo('test'));
+        $this->builder->expectsCallAt(1, 'doSomeThing');
+        $this->builder->expectsAtLeastOneCall('doSomeThing');
+        $this->builder->expectsNoCall('doSomeThing');
+        $this->builder->expectsExactNumberOfCalls(2, 'doSomeThing');
+        $this->builder->with('doSomeThing', $this->returnValue('test'));
+        $this->assertThat($this->builder->build(), $this->isInstanceOf('PHPUnit_Framework_MockObject_MockObject'));
     }
 
     /**
@@ -220,9 +214,9 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
     }
 }
 
-class TestClass
+class TestClassForMockObjectBuilder
 {
-    public function doSomething()
+    public function doSomeThing()
     {
 
     }

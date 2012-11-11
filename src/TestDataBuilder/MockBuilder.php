@@ -43,7 +43,9 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
      */
     public function with($method, $will)
     {
-        return parent::with($method, $will);
+        $with = $this->expects($method, $this->testCase->any());
+        $with->will($will);
+        return $with;
     }
 
     public function expectsCall($method)
@@ -76,10 +78,14 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
      */
     public function build()
     {
-        $mock = $this->testCase->getMock($this->className);
-        $this->loadMethodStubs($mock);
+        $mock = $this->createMock();
         $this->loadMethodMocks($mock);
         return $mock;
+    }
+
+    protected function createMock()
+    {
+        return $this->testCase->getMock($this->className);
     }
 
     private function loadMethodMocks($mock)
@@ -92,6 +98,9 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
                 $invocationMocker,
                 $this->buildIfValuesAreBuilder($expectation->getArguments())
             );
+            if ($expectation->isStubbed()) {
+                $invocationMocker->will($this->buildStub($expectation->getStub()));
+            }
         }
     }
 
