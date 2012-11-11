@@ -48,7 +48,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
     public function itShouldBuildAMockWhichExpectsAMethodCallWithDefinedParameters()
     {
         $this->builder->expectsCall('doSomeThing')
-            ->with(34, $this->isInstanceOf('stdClass'));
+            ->with($this->equalTo(34), $this->isInstanceOf('stdClass'));
         $expectedMessage = "Expectation failed for method name is equal to <string:doSomeThing> when invoked 1 time(s).\nParameter 1 for invocation TestClass::doSomething(34, null) does not match expected value.\nFailed asserting that null is an instance of class \"stdClass\".";
         $mock = $this->builder->build();
 

@@ -88,7 +88,10 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
             $invocationMocker = $mock->expects($expectation->getInvocationMatcher());
             $invocationMocker = $invocationMocker->method($expectation->getMethod());
             $invocationMockerReflection = new ReflectionMethod('PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'with');
-            $invocationMockerReflection->invokeArgs($invocationMocker, $expectation->getArguments());
+            $invocationMockerReflection->invokeArgs(
+                $invocationMocker,
+                $this->buildIfValuesAreBuilder($expectation->getArguments())
+            );
         }
     }
 
