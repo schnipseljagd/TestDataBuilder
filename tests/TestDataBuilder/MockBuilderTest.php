@@ -145,7 +145,19 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
         $this->builder->with('doSomeThing', 'a value');
         $this->builder->expectsCall('doSomeThing')->with('test')->will('another value');
         $mock = $this->builder->build();
-        $this->assertThat($mock->doSomeThing('test'), $this->equalTo('a value'));
+        $this->assertThat($mock->doSomeThing('test'), $this->equalTo('another value'));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildAMockWithAMethodStubWhichWasOverriden()
+    {
+        $this->builder->with('doSomeThing', 'a value');
+        $this->builder->with('doSomeThing', 'another value');
+        $this->builder->expectsCall('doSomeThing')->with('test');
+        $mock = $this->builder->build();
+        $this->assertThat($mock->doSomeThing('test'), $this->equalTo('another value'));
     }
 
     /**
