@@ -1,5 +1,6 @@
 # TestDataBuilder
-Help you to organize your mocks, stub, object and array setups in your tests in a nice oop way.
+Helps you to build your mocks, stubs and test data in a nice oop way.
+
 TestDataBuilder are using the native phpunit-mock-objects for mock and stub builders.
 
 [![Build Status](https://travis-ci.org/schnipseljagd/TestDataBuilder.png)](https://travis-ci.org/schnipseljagd/TestDataBuilder)

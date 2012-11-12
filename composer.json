@@ -1,6 +1,6 @@
 {
     "name": "schnipseljagd/testdatabuilder",
-    "description": "Help you to organize your mocks, stub, object and array setups in your tests in a nice oop way.",
+    "description": "Helps you to build your mocks, stubs and test data in a nice oop way.",
     "keywords": ["test","testing","mock","mocking"],
     "homepage": "https://github.com/schnipseljagd/TestDataBuilder",
     "license": "LGPL",
@@ -11,12 +11,10 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "phpunit/phpunit": "@stable"
     },
     "autoload": {
         "psr-0": { "TestDataBuilder": "src/" }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "@stable"
     }
 }
