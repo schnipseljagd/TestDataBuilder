@@ -45,7 +45,7 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
     {
         $with = $this->expects($method, $this->testCase->any());
         $with->will($will);
-        return $with;
+        return $this;
     }
 
     public function expectsCall($method)
