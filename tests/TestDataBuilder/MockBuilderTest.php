@@ -202,11 +202,6 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
         $this->assertThat($mock->doSomeThing(array('a value')), $this->equalTo(array('a value')));
     }
 
-    private function anArray(array $data)
-    {
-        return new TestDataBuilder_ArrayBuilder($data);
-    }
-
     /**
      * @test
      */
@@ -244,6 +239,11 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
           $cloneArguments
         );
         return $mockObject;
+    }
+
+    private function anArray(array $data)
+    {
+        return new TestDataBuilder_ArrayBuilder($data);
     }
 
     /**

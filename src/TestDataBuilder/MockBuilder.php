@@ -85,7 +85,7 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
 
     protected function createMock()
     {
-        return $this->testCase->getMock($this->className);
+        return $this->testCase->getMock($this->className, array(), array(), '', false, false);
     }
 
     private function loadMethodMocks($mock)
