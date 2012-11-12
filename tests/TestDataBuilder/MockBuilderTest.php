@@ -175,6 +175,41 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function itShouldBuildAMockWithAStubWhichReturnsAnotherBuilder()
+    {
+        $this->builder->with('doSomeThing', $this->anArray(array('a value')));
+        $mock = $this->builder->build();
+        $this->assertThat($mock->doSomeThing(), $this->equalTo(array('a value')));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildAMockWithAnotherStubWhichReturnsAnotherBuilder()
+    {
+        $this->builder->expectsCall('doSomeThing')->will($this->anArray(array('a value')));
+        $mock = $this->builder->build();
+        $this->assertThat($mock->doSomeThing(), $this->equalTo(array('a value')));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildAMockWithAnExpectationWhichHasAnBuilderAsExpectedArgument()
+    {
+        $this->builder->expectsCall('doSomeThing')->with($this->anArray(array('a value')))->will($this->returnCallback(function ($arg1) {return $arg1;}));
+        $mock = $this->builder->build();
+        $this->assertThat($mock->doSomeThing(array('a value')), $this->equalTo(array('a value')));
+    }
+
+    private function anArray(array $data)
+    {
+        return new TestDataBuilder_ArrayBuilder($data);
+    }
+
+    /**
+     * @test
+     */
     public function itShouldBuildAMockObject()
     {
         $this->builder->expectsCall('doSomeThing')->with($this->equalTo('test'));

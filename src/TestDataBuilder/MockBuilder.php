@@ -113,7 +113,7 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
         if (isset($this->expectations[$method])) {
             $existingExpectation = $this->expectations[$method];
             if ($existingExpectation->isStubbed()) {
-                $expectation->will($existingExpectation->getStub());
+                $expectation->will($this->buildStub($existingExpectation->getStub()));
             }
         }
         $this->expectations[$method] = $expectation;
