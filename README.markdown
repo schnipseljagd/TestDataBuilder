@@ -3,7 +3,7 @@ Helps you to build your mocks, stubs and test data in a nice oop way.
 
 TestDataBuilder are using the native phpunit-mock-objects for mock and stub builders.
 
-[![Build Status](https://travis-ci.org/schnipseljagd/TestDataBuilder.png)](https://travis-ci.org/schnipseljagd/TestDataBuilder)
+[![Build Status](https://travis-ci.org/schnipseljagd/TestDataBuilder.png?branch=master)](https://travis-ci.org/schnipseljagd/TestDataBuilder)
 
 Why should i need them?
 
