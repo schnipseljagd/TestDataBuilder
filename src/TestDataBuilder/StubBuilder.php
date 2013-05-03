@@ -58,7 +58,9 @@ class TestDataBuilder_StubBuilder extends TestDataBuilder_CustomBuilder
         foreach ($this->fields as $field => $will) {
             $will = $this->buildStub($will);
 
-            $stub->expects($this->testCase->any())->method($field)->will($will);
+            $methodConstraint = new TestDataBuilder_SimpleEqualsConstraint($field);
+
+            $stub->expects($this->testCase->any())->method($methodConstraint)->will($will);
         }
     }
 
