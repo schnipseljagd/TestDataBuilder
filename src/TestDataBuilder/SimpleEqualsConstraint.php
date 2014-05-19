@@ -8,6 +8,7 @@ class TestDataBuilder_SimpleEqualsConstraint extends PHPUnit_Framework_Constrain
     public function __construct($expected)
     {
         $this->expected = $expected;
+        parent::__construct();
     }
 
     protected function matches($other)
@@ -24,7 +25,7 @@ class TestDataBuilder_SimpleEqualsConstraint extends PHPUnit_Framework_Constrain
     {
         return sprintf(
             'equals (==) %s',
-            PHPUnit_Util_Type::export($this->expected)
+            $this->exporter->export($this->expected)
         );
     }
 }

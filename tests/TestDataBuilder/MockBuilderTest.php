@@ -35,7 +35,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
     public function itShouldBuildAMockWhichExpectsAMethodCall()
     {
         $this->builder->expectsCall('doSomeThing');
-        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 1 time(s).\nMethod was expected to be called 1 times, actually called 0 times.";
+        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 1 time(s).\nMethod was expected to be called 1 times, actually called 0 times.\n";
         $this->assertThatMockRaisesError(
             $this->builder->build(), 
             $expectedMessage
@@ -49,7 +49,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
     {
         $this->builder->expectsCall('doSomeThing')
             ->with($this->equalTo(34), $this->isInstanceOf('stdClass'));
-        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 1 time(s).\nParameter 1 for invocation TestClassForMockObjectBuilder::doSomeThing(34, null) does not match expected value.\nFailed asserting that null is an instance of class \"stdClass\".";
+        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 1 time(s).\nParameter 1 for invocation TestClassForMockObjectBuilder::doSomeThing(34, null) does not match expected value.\nFailed asserting that null is an instance of class \"stdClass\".\n";
         $mock = $this->builder->build();
 
         try {
@@ -69,7 +69,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
     public function itShouldBuildAMockWhichExpectsNothing()
     {
         $this->builder->expectsNoCall('doSomeThing');
-        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 0 time(s).\nMethod was expected to be called 0 times, actually called 1 times.";
+        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 0 time(s).\nMethod was expected to be called 0 times, actually called 1 times.\n";
         $mock = $this->builder->build();
         try {
             $mock->doSomeThing();
@@ -87,7 +87,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildAMockWhichExpectsAMethodCallAtAnIndex()
     {
-        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked at sequence index 0.\nThe expected invocation at index 0 was never reached.";
+        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked at sequence index 0.\nThe expected invocation at index 0 was never reached.\n";
         $this->builder->expectsCallAt(0, 'doSomeThing');
         $this->assertThatMockRaisesError(
             $this->builder->build(), 
@@ -100,7 +100,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildAMockWhichExpectsAtLeastOneCall()
     {
-        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked at least once.\nExpected invocation at least once but it never occured.";
+        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked at least once.\nExpected invocation at least once but it never occured.\n";
         $this->builder->expectsAtLeastOneCall('doSomeThing');
         $this->assertThatMockRaisesError(
             $this->builder->build(), 
@@ -113,7 +113,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildAMockWhichExpectsExactNumberOfCalls()
     {
-        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 2 time(s).\nMethod was expected to be called 2 times, actually called 1 times.";
+        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 2 time(s).\nMethod was expected to be called 2 times, actually called 1 times.\n";
         $this->builder->expectsExactNumberOfCalls(2, 'doSomeThing');
         $mock = $this->builder->build();
         $mock->doSomeThing();
@@ -130,7 +130,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
     {
         $this->builder->with('doSomeThing', 'a value');
         $this->builder->expectsCall('doSomeThing');
-        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 1 time(s).\nMethod was expected to be called 1 times, actually called 0 times.";
+        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 1 time(s).\nMethod was expected to be called 1 times, actually called 0 times.\n";
         $this->assertThatMockRaisesError(
             $this->builder->build(), 
             $expectedMessage
@@ -226,9 +226,10 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
      * @param bool $callAutoload
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE)
+    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE)
     {
-        $mockObject = PHPUnit_Framework_MockObject_Generator::getMock(
+        $generator = new PHPUnit_Framework_MockObject_Generator();
+        $mockObject = $generator->getMock(
           $originalClassName,
           $methods,
           $arguments,
@@ -236,7 +237,8 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
           $callOriginalConstructor,
           $callOriginalClone,
           $callAutoload,
-          $cloneArguments
+          $cloneArguments,
+          $callOriginalMethods
         );
         return $mockObject;
     }

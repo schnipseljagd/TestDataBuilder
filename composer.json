@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit": "~4.1"
     },
     "autoload": {
         "psr-0": { "TestDataBuilder": "src/" }

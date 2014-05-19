@@ -143,9 +143,10 @@ class TestDataBuilder_PartialMockBuilderTest extends PHPUnit_Framework_TestCase
      * @param bool $callAutoload
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE)
+    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE)
     {
-        $mockObject = PHPUnit_Framework_MockObject_Generator::getMock(
+        $generator = new PHPUnit_Framework_MockObject_Generator();
+        $mockObject = $generator->getMock(
           $originalClassName,
           $methods,
           $arguments,
@@ -153,7 +154,8 @@ class TestDataBuilder_PartialMockBuilderTest extends PHPUnit_Framework_TestCase
           $callOriginalConstructor,
           $callOriginalClone,
           $callAutoload,
-          $cloneArguments
+          $cloneArguments,
+          $callOriginalMethods
         );
         return $mockObject;
     }
